@@ -3,7 +3,7 @@
 Plugin Name: Genesis Latest Tweets Widget
 Plugin URI: http://wpsmith.net/
 Description: Genesis Latest Tweets Widget.
-Version: 1.0.2
+Version: 1.0.3
 Author: wpsmith
 Author URI: http://wpsmith.net/
 Author Email: t@wpsmith.net
@@ -55,7 +55,7 @@ class Genesis_Twitter {
 	 */
 	function __construct() {
 
-		load_plugin_textdomain( 'genesis-twitter', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'genesis-latest-tweets', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		add_action( 'widgets_init', array( $this, 'load_widget' ), 25 );
 		
@@ -89,6 +89,7 @@ class Genesis_Twitter {
 
 		$theme  = wp_get_theme();
 		$parent = wp_get_theme( $theme->Template );
+		if ( empty( $parent ) ) $parent = $theme;
 
 		if ( 'genesis' != basename( TEMPLATEPATH ) || 'genesis' != $theme['Template'] ) {
 			if ( !function_exists( 'deactivate_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -114,7 +115,7 @@ class Genesis_Twitter {
 	function deactivation_message() {
 		
 		// Output message
-		printf( '<div id="message" class="error"><p>' . __( 'Sorry, you can\'t activate unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-twitter' ) . '</p></div>', 'http://www.studiopress.com/genesis', __( $latest, 'genesis-twitter' ) );
+		printf( '<div id="message" class="error"><p>' . __( 'Sorry, you can\'t activate unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-latest-tweets' ) . '</p></div>', 'http://www.studiopress.com/genesis', $latest );
 		
 		// Remove single activation notice hack.
 		unset( $_GET['activate'] );
