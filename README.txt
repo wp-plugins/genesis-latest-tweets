@@ -1,4 +1,4 @@
-=== Genesis Latest Tweets Widget ===
+=== Genesis Latest Tweets ===
 Contributors: wpsmith
 Donate link: http://wpsmith.net/
 Tags: genesis, genesiswp, twitter, tweets
