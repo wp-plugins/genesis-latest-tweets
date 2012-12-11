@@ -3,7 +3,7 @@
 Plugin Name: Genesis Latest Tweets Widget
 Plugin URI: http://wpsmith.net/
 Description: Genesis Latest Tweets Widget.
-Version: 1.0.4
+Version: 1.0.5
 Author: wpsmith
 Author URI: http://wpsmith.net/
 Author Email: t@wpsmith.net
@@ -118,7 +118,7 @@ class Genesis_Twitter {
 		// Output message
 		printf(
 			'<div id="message" class="error"><p>' . 
-			__( 'Sorry, you can\'t activate unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-latest-tweets' ) . 
+			__( 'Sorry, you can\'t activate Genesis Latest Tweets unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-latest-tweets' ) . 
 			'</p></div>', 
 			'http://www.studiopress.com/genesis', 
 			$latest 
