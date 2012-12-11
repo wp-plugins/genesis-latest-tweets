@@ -4,11 +4,9 @@
  *
  * @category Genesis_Twitter
  * @package  Functions
- * @author   StudioPress
- * @author   Travis Smith
+ * @author   Travis Smith, for StudioPress
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  */
-
 
 /**
  * Adds links to the contents of a tweet.
@@ -24,7 +22,7 @@
  *
  * @return string Linkified tweet content
  */
-function genesis_tweet_linkify( $text ) {
+function gltw_tweet_linkify( $text ) {
 
 	$text = preg_replace( "#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", '\\1<a href="\\2" target="_blank">\\2</a>', $text );
 	$text = preg_replace( "#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", '\\1<a href="http://\\2" target="_blank">\\2</a>', $text );

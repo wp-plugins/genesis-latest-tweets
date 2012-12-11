@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Genesis Twitter
+Plugin Name: Genesis Latest Tweets Widget
 Plugin URI: http://wpsmith.net/
-Description: Genesis Twitter Widget.
+Description: Genesis Latest Tweets Widget.
 Version: 1.0.0
 Author: wpsmith
 Author URI: http://wpsmith.net/
@@ -39,8 +39,8 @@ define( 'GENESIS_TWITTER_DIR', dirname( __FILE__ ) );
  * @since 1.0.0
  *
  * @category Genesis_Twitter
- * @package	Widgets
- * @author	Travis Smith
+ * @package	 Widgets
+ * @author	 Travis Smith
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  * @link     http://www.studiopress.com/themes/genesis
  */
@@ -55,11 +55,11 @@ class Genesis_Twitter {
 	 */
 	function __construct() {
 
-		load_plugin_textdomain( 'genesis-latest-tweets', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'genesis-twitter', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
-		add_action( 'widgets_init', array( $this, 'load_widget' ) );
+		add_action( 'widgets_init', array( $this, 'load_widget' ), 25 );
 		
-		// TODO Waiting on Nathan to determine activation/deactivation steps
+		// @todo Waiting on Nathan to determine activation/deactivation steps
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		//register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 		
@@ -71,8 +71,11 @@ class Genesis_Twitter {
 	 * Load the Twitter widget.
 	 */
 	public function load_widget() {
+		// Remove Genesis Twiter Widget
+		unregister_widget( 'Genesis_Latest_Tweets_Widget' );
+	
 		require_once( GENESIS_TWITTER_DIR . '/includes/latest-tweets-widget.php' );
-		register_widget( 'Genesis_Latest_Tweets_Widget' );
+		register_widget( 'GLTW_Latest_Tweets_Widget' );
 	} // end load_widget
 	
 	/**
@@ -83,7 +86,7 @@ class Genesis_Twitter {
 	public function activate( $network_wide ) {
 		$latest = '1.9';
 
-		$theme = wp_get_theme();
+		$theme  = wp_get_theme();
 		$parent = wp_get_theme( $theme->Template );
 
 		if ( 'genesis' != basename( TEMPLATEPATH ) || 'genesis' != $theme['Template'] ) {
@@ -110,7 +113,7 @@ class Genesis_Twitter {
 	function deactivation_message() {
 		
 		// Output message
-		printf( '<div id="message" class="error"><p>' . __( 'Sorry, you can\'t activate unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-latest-tweets' ) . '</p></div>', 'http://www.studiopress.com/genesis', __( $latest, 'genesis-latest-tweets' ) );
+		printf( '<div id="message" class="error"><p>' . __( 'Sorry, you can\'t activate unless you have installed <a href="%s">Genesis %s</a> or greater', 'genesis-twitter' ) . '</p></div>', 'http://www.studiopress.com/genesis', __( $latest, 'genesis-twitter' ) );
 		
 		// Remove single activation notice hack.
 		unset( $_GET['activate'] );

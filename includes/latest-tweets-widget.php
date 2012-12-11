@@ -4,11 +4,9 @@
  *
  * @category Genesis_Twitter
  * @package  Widgets
- * @author   StudioPress
- * @author   Travis Smith
+ * @author   Travis Smith, for StudioPress
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  */
-
 
 /**
  * Genesis Latest Tweets widget class.
@@ -18,7 +16,7 @@
  *
  * @since 1.0.0
  */
-class Genesis_Latest_Tweets_Widget extends WP_Widget {
+class GLTW_Latest_Tweets_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -46,7 +44,7 @@ class Genesis_Latest_Tweets_Widget extends WP_Widget {
 
 		$widget_ops = array(
 			'classname'   => 'latest-tweets',
-			'description' => __( 'Display a list of your latest tweets.', 'genesis-latest-tweets' ),
+			'description' => __( 'Display a list of your latest tweets.', 'genesis-twitter' ),
 		);
 
 		$control_ops = array(
@@ -55,7 +53,7 @@ class Genesis_Latest_Tweets_Widget extends WP_Widget {
 			'height'  => 250,
 		);
 
-		$this->WP_Widget( 'latest-tweets', __( 'Genesis - Latest Tweets', 'genesis-latest-tweets' ), $widget_ops, $control_ops );
+		$this->WP_Widget( 'latest-tweets', __( 'Genesis - Latest Tweets', 'genesis-twitter' ), $widget_ops, $control_ops );
 
 	}
 
@@ -97,13 +95,13 @@ class Genesis_Latest_Tweets_Widget extends WP_Widget {
 			$json = json_decode( $twitter );
 
 			if ( ! $twitter ) {
-				$tweets[] = '<li>' . __( 'The Twitter API is taking too long to respond. Please try again later.', 'genesis-latest-tweets' ) . '</li>' . "\n";
+				$tweets[] = '<li>' . __( 'The Twitter API is taking too long to respond. Please try again later.', 'genesis-twitter' ) . '</li>' . "\n";
 			}
 			elseif ( is_wp_error( $twitter ) ) {
-				$tweets[] = '<li>' . __( 'There was an error while attempting to contact the Twitter API. Please try again.', 'genesis-latest-tweets' ) . '</li>' . "\n";
+				$tweets[] = '<li>' . __( 'There was an error while attempting to contact the Twitter API. Please try again.', 'genesis-twitter' ) . '</li>' . "\n";
 			}
 			elseif ( is_object( $json ) && $json->error ) {
-				$tweets[] = '<li>' . __( 'The Twitter API returned an error while processing your request. Please try again.', 'genesis-latest-tweets' ) . '</li>' . "\n";
+				$tweets[] = '<li>' . __( 'The Twitter API returned an error while processing your request. Please try again.', 'genesis-twitter' ) . '</li>' . "\n";
 			}
 			else {
 				/** Build the tweets array */
@@ -117,10 +115,10 @@ class Genesis_Latest_Tweets_Widget extends WP_Widget {
 						break;
 
 					/** Add tweet to array */
-					$timeago = sprintf( __( 'about %s ago', 'genesis-latest-tweets' ), human_time_diff( strtotime( $tweet->created_at ) ) );
+					$timeago = sprintf( __( 'about %s ago', 'genesis-twitter' ), human_time_diff( strtotime( $tweet->created_at ) ) );
 					$timeago_link = sprintf( '<a href="%s" rel="nofollow">%s</a>', esc_url( sprintf( 'http://twitter.com/%s/status/%s', $instance['twitter_id'], $tweet->id_str ) ), esc_html( $timeago ) );
 
-					$tweets[] = '<li>' . genesis_tweet_linkify( $tweet->text ) . ' <span style="font-size: 85%;">' . $timeago_link . '</span></li>' . "\n";
+					$tweets[] = '<li>' . gltw_tweet_linkify( $tweet->text ) . ' <span style="font-size: 85%;">' . $timeago_link . '</span></li>' . "\n";
 				}
 
 				/** Just in case */
@@ -180,46 +178,46 @@ class Genesis_Latest_Tweets_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'genesis-latest-tweets' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'genesis-twitter' ); ?>:</label>
 			<input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'twitter_id' ); ?>"><?php _e( 'Twitter Username', 'genesis-latest-tweets' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'twitter_id' ); ?>"><?php _e( 'Twitter Username', 'genesis-twitter' ); ?>:</label>
 			<input type="text" id="<?php echo $this->get_field_id( 'twitter_id' ); ?>" name="<?php echo $this->get_field_name( 'twitter_id' ); ?>" value="<?php echo esc_attr( $instance['twitter_id'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'twitter_num' ); ?>"><?php _e( 'Number of Tweets to Show', 'genesis-latest-tweets' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'twitter_num' ); ?>"><?php _e( 'Number of Tweets to Show', 'genesis-twitter' ); ?>:</label>
 			<input type="text" id="<?php echo $this->get_field_id( 'twitter_num' ); ?>" name="<?php echo $this->get_field_name( 'twitter_num' ); ?>" value="<?php echo esc_attr( $instance['twitter_num'] ); ?>" size="3" />
 		</p>
 
 		<p>
 			<input id="<?php echo $this->get_field_id( 'twitter_hide_replies' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'twitter_hide_replies' ); ?>" value="1" <?php checked( $instance['twitter_hide_replies'] ); ?>/>
-			<label for="<?php echo $this->get_field_id( 'twitter_hide_replies' ); ?>"><?php _e( 'Hide @ Replies', 'genesis-latest-tweets' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'twitter_hide_replies' ); ?>"><?php _e( 'Hide @ Replies', 'genesis-twitter' ); ?></label>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'twitter_duration' ); ?>"><?php _e( 'Load new Tweets every', 'genesis-latest-tweets' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'twitter_duration' ); ?>"><?php _e( 'Load new Tweets every', 'genesis-twitter' ); ?></label>
 			<select name="<?php echo $this->get_field_name( 'twitter_duration' ); ?>" id="<?php echo $this->get_field_id( 'twitter_duration' ); ?>">
-				<option value="5" <?php selected( 5, $instance['twitter_duration'] ); ?>><?php _e( '5 Min.' , 'genesis-latest-tweets' ); ?></option>
-				<option value="15" <?php selected( 15, $instance['twitter_duration'] ); ?>><?php _e( '15 Minutes' , 'genesis-latest-tweets' ); ?></option>
-				<option value="30" <?php selected( 30, $instance['twitter_duration'] ); ?>><?php _e( '30 Minutes' , 'genesis-latest-tweets' ); ?></option>
-				<option value="60" <?php selected( 60, $instance['twitter_duration'] ); ?>><?php _e( '1 Hour' , 'genesis-latest-tweets' ); ?></option>
-				<option value="120" <?php selected( 120, $instance['twitter_duration'] ); ?>><?php _e( '2 Hours' , 'genesis-latest-tweets' ); ?></option>
-				<option value="240" <?php selected( 240, $instance['twitter_duration'] ); ?>><?php _e( '4 Hours' , 'genesis-latest-tweets' ); ?></option>
-				<option value="720" <?php selected( 720, $instance['twitter_duration'] ); ?>><?php _e( '12 Hours' , 'genesis-latest-tweets' ); ?></option>
-				<option value="1440" <?php selected( 1440, $instance['twitter_duration'] ); ?>><?php _e( '24 Hours' , 'genesis-latest-tweets' ); ?></option>
+				<option value="5" <?php selected( 5, $instance['twitter_duration'] ); ?>><?php _e( '5 Min.' , 'genesis-twitter' ); ?></option>
+				<option value="15" <?php selected( 15, $instance['twitter_duration'] ); ?>><?php _e( '15 Minutes' , 'genesis-twitter' ); ?></option>
+				<option value="30" <?php selected( 30, $instance['twitter_duration'] ); ?>><?php _e( '30 Minutes' , 'genesis-twitter' ); ?></option>
+				<option value="60" <?php selected( 60, $instance['twitter_duration'] ); ?>><?php _e( '1 Hour' , 'genesis-twitter' ); ?></option>
+				<option value="120" <?php selected( 120, $instance['twitter_duration'] ); ?>><?php _e( '2 Hours' , 'genesis-twitter' ); ?></option>
+				<option value="240" <?php selected( 240, $instance['twitter_duration'] ); ?>><?php _e( '4 Hours' , 'genesis-twitter' ); ?></option>
+				<option value="720" <?php selected( 720, $instance['twitter_duration'] ); ?>><?php _e( '12 Hours' , 'genesis-twitter' ); ?></option>
+				<option value="1440" <?php selected( 1440, $instance['twitter_duration'] ); ?>><?php _e( '24 Hours' , 'genesis-twitter' ); ?></option>
 			</select>
 		</p>
 
 		<p>
 			<input id="<?php echo $this->get_field_id( 'follow_link_show' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'follow_link_show' ); ?>" value="1" <?php checked( $instance['follow_link_show'] ); ?>/>
-			<label for="<?php echo $this->get_field_id( 'follow_link_show' ); ?>"><?php _e( 'Include link to twitter page?', 'genesis-latest-tweets' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'follow_link_show' ); ?>"><?php _e( 'Include link to twitter page?', 'genesis-twitter' ); ?></label>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'follow_link_text' ); ?>"><?php _e( 'Link Text (required)', 'genesis-latest-tweets' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'follow_link_text' ); ?>"><?php _e( 'Link Text (required)', 'genesis-twitter' ); ?>:</label>
 			<input type="text" id="<?php echo $this->get_field_id( 'follow_link_text' ); ?>" name="<?php echo $this->get_field_name( 'follow_link_text' ); ?>" value="<?php echo esc_attr( $instance['follow_link_text'] ); ?>" class="widefat" />
 		</p>
 		<?php
