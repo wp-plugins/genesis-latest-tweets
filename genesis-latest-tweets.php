@@ -3,7 +3,7 @@
 Plugin Name: Genesis Latest Tweets Widget
 Plugin URI: http://wpsmith.net/
 Description: Genesis Latest Tweets Widget.
-Version: 1.0.5
+Version: 1.0.6
 Author: wpsmith
 Author URI: http://wpsmith.net/
 Author Email: t@wpsmith.net
@@ -99,6 +99,7 @@ class Genesis_Twitter {
 		
 		// Remove -dev if present from trunk
 		$version = str_replace( '-dev', '', $parent['Version'] );
+		$version = str_replace( '-beta', '', $parent['Version'] );
 		
 		if ( version_compare( $version, $latest, '<' ) ) {
 			if ( !function_exists( 'deactivate_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
