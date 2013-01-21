@@ -74,7 +74,7 @@ class Genesis_Twitter {
 		// Remove Genesis Twiter Widget
 		unregister_widget( 'Genesis_Latest_Tweets_Widget' );
 	
-		require_once( GENESIS_TWITTER_DIR . '/includes/formatting.php' );
+		require_once( GENESIS_TWITTER_DIR . '/includes/functions.php' );
 		require_once( GENESIS_TWITTER_DIR . '/includes/latest-tweets-widget.php' );
 		register_widget( 'GLTW_Latest_Tweets_Widget' );
 	} // end load_widget
