@@ -98,8 +98,10 @@ class Genesis_Twitter {
 		}
 		
 		// Remove -dev if present from trunk
-		$version = str_replace( '-dev', '', $parent['Version'] );
-		$version = str_replace( '-beta', '', $parent['Version'] );
+		$version = $parent['Version'];
+		$version = str_replace( '-dev', '', $version );
+		$version = str_replace( '-beta', '', $version );
+		$version = str_replace( '-alpha', '', $version );
 		
 		if ( version_compare( $version, $latest, '<' ) ) {
 			if ( !function_exists( 'deactivate_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
