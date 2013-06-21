@@ -46,6 +46,9 @@ function gltw_widget_init() {
 add_action( 'admin_notices', 'gltw_plugin_activation' );
 function gltw_plugin_activation() {
 	global $gltw_errors;
+	
+	if ( ! function_exists( 'gltw_api_config' ) ) require_once( GLTW_INC . '/functions.php' );
+	
 	extract( gltw_api_config() );
 	
 	if ( empty( $consumer_key ) || empty( $consumer_secret ) || empty( $access_key ) || empty( $access_secret ) || ! empty( $gltw_errors ) ) {
