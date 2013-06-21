@@ -212,7 +212,11 @@ class TwitterApiClient {
     public function call( $path, array $_args, $http_method ){
         // all calls must be authenticated in API 1.1
         if( ! $this->has_auth() ){
-            throw new TwitterApiException( __('Twitter client not authenticated', GLTW_DOMAIN ), 0, 401 );
+            //throw new TwitterApiException( __('Twitter client not authenticated', GLTW_DOMAIN ), 0, 401 );
+			global $gltw_errors;
+			$gltw_errors .= '<p>' . __( 'Twitter Exception ', GLTW_DOMAIN ) . "\n";
+			$gltw_errors .= __( 'Status: ', GLTW_DOMAIN ) . 401 . "\n";
+			$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . __( 'Twitter client not authenticated', GLTW_DOMAIN ) . '</p>';
         }
         // transform some arguments and ensure strings
         // no further validation is performed
@@ -228,7 +232,10 @@ class TwitterApiClient {
                  $args[$key] = 'false';
             }
             else if( ! is_scalar($val) ){
-                throw new TwitterApiException( __('Invalid Twitter parameter', GLTW_DOMAIN ).' ('.gettype($val).') '.$key.' in '.$path, -1 );
+				global $gltw_errors;
+				$gltw_errors .= __( 'Status: ', GLTW_DOMAIN ) . -1 . "\n";
+				$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . __('Invalid Twitter parameter', GLTW_DOMAIN ).' ('.gettype($val).') '.$key.' in '.$path . '</p>';
+                //throw new TwitterApiException( __('Invalid Twitter parameter', GLTW_DOMAIN ).' ('.gettype($val).') '.$key.' in '.$path, -1 );
             }
             else {
                 $args[$key] = (string) $val;
@@ -266,41 +273,43 @@ class TwitterApiClient {
             $conf['body'] = $params->serialize();
         }
         $http = self::http_request( $endpoint, $conf );
-        $data = json_decode( $http['body'], true );
-        $status = $http['response']['code'];
-        // remember current rate limits for this endpoint
-        $this->last_call = $path;
-        if( isset($http['headers']['x-rate-limit-limit']) ) {
-            $this->last_rate[$path] = array (
-                'limit'     => (int) $http['headers']['x-rate-limit-limit'],
-                'remaining' => (int) $http['headers']['x-rate-limit-remaining'],
-                'reset'     => (int) $http['headers']['x-rate-limit-reset'],
-            );
-        }
-        // unserializable array assumed to be serious error
-        if( ! is_array($data) ){
-            $err = array( 
-                'message' => '', // <- blank so we use twitter-specific message
-                'code' => -1 
-            );
-            TwitterApiException::chuck( $err, $status );
-        }
-        // else could be well-formed error
-        if( isset( $data['errors'] ) ) {
-            while( $err = array_shift($data['errors']) ){
-                $err['message'] = __( $err['message'] );
-                if( $data['errors'] ){
-                    $message = sprintf( __('Twitter error #%d'), $err['code'] ).' "'.$err['message'].'"';
-                    trigger_error( $message, E_USER_WARNING );
-                }
-                else {
-                    TwitterApiException::chuck( $err, $status );
-                }
-            }
-        }
-        if( isset($cachekey) ){
-           gltw_api_cache_set( $cachekey, $data, $this->cache_ttl );
-        }
+		if ( !is_wp_error( $http ) ) {
+			$data = json_decode( $http['body'], true );
+			$status = $http['response']['code'];
+			// remember current rate limits for this endpoint
+			$this->last_call = $path;
+			if( isset($http['headers']['x-rate-limit-limit']) ) {
+				$this->last_rate[$path] = array (
+					'limit'     => (int) $http['headers']['x-rate-limit-limit'],
+					'remaining' => (int) $http['headers']['x-rate-limit-remaining'],
+					'reset'     => (int) $http['headers']['x-rate-limit-reset'],
+				);
+			}
+			// unserializable array assumed to be serious error
+			if( ! is_array($data) ){
+				$err = array( 
+					'message' => '', // <- blank so we use twitter-specific message
+					'code' => -1 
+				);
+				TwitterApiException::chuck( $err, $status );
+			}
+			// else could be well-formed error
+			if( isset( $data['errors'] ) ) {
+				while( $err = array_shift($data['errors']) ){
+					$err['message'] = __( $err['message'] );
+					if( $data['errors'] ){
+						$message = sprintf( __('Twitter error #%d'), $err['code'] ).' "'.$err['message'].'"';
+						trigger_error( $message, E_USER_WARNING );
+					}
+					else {
+						TwitterApiException::chuck( $err, $status );
+					}
+				}
+			}
+			if( isset($cachekey) ){
+			   gltw_api_cache_set( $cachekey, $data, $this->cache_ttl );
+			}
+		}
         return $data;
     }
 
@@ -327,11 +336,21 @@ class TwitterApiClient {
         $body = trim( $http['body'] );
         $stat = $http['response']['code'];
         if( 200 !== $stat ){
-            throw new TwitterApiException( $body, -1, $stat );
+			global $gltw_errors;
+			$gltw_errors .= '<p>' . __( 'Twitter Exception ', GLTW_DOMAIN ) . "\n";
+			$gltw_errors .= __( 'Status: ', GLTW_DOMAIN ) . $stat . "\n";
+			$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . $body . '</p>';
+            //throw new TwitterApiException( $body, -1, $stat );
         }
         parse_str( $body, $params );
         if( ! is_array($params) || ! isset($params['oauth_token']) || ! isset($params['oauth_token_secret']) ){
-            throw new TwitterApiException( __('Malformed response from Twitter', GLTW_DOMAIN ), -1, $stat );
+            
+			global $gltw_errors;
+			$gltw_errors .= '<p>' . __( 'Twitter Exception ', GLTW_DOMAIN ) . "\n";
+			$gltw_errors .= __( 'Status: ', GLTW_DOMAIN ) . $stat . "\n";
+			$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . __('Malformed response from Twitter', GLTW_DOMAIN ) . '</p>';
+			
+			//throw new TwitterApiException( __('Malformed response from Twitter', GLTW_DOMAIN ), -1, $stat );
         }
         return $params;   
     }
@@ -346,11 +365,21 @@ class TwitterApiClient {
         $http = wp_remote_request( $endpoint, $conf );
         if( $http instanceof WP_Error ){
             foreach( $http->get_error_messages() as $message ){
-                throw new TwitterApiException( $message, -1 );
+				global $gltw_errors;
+				$gltw_errors .= '<p>' . __( 'Twitter Exception ', GLTW_DOMAIN ) . "\n";
+				$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . $message . '</p>';
+				
+                //throw new TwitterApiException( $message, -1 );
             }
         }
-        if( empty($http['response']) ){
-            throw new TwitterApiException( __('Wordpress HTTP request failure', GLTW_DOMAIN ), -1 );
+        elseif( empty($http['response']) ){
+			
+			global $gltw_errors;
+			$gltw_errors .= '<p>' . __( 'Twitter Exception ', GLTW_DOMAIN ) . "\n";
+			$gltw_errors .= __( 'Message: ', GLTW_DOMAIN ) . __('Wordpress HTTP request failure', GLTW_DOMAIN ) . '</p>';
+			
+            //throw new TwitterApiException( __('Wordpress HTTP request failure', GLTW_DOMAIN ), -1 );
+			
         }
         return $http;
     }
@@ -518,7 +547,6 @@ class TwitterApiException extends Exception {
         $eclass = isset($classes[$status]) ? $classes[$status] : __CLASS__;
 		
 //		set_exception_handler('gltw_exception_handler');
-		
 		
 		$gltw_errors = '';
 		$gltw_errors .= 'Uncaught exception ' . $code . ': ' . "\n";

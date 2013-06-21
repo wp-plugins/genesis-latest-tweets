@@ -49,7 +49,9 @@ function twitter_api_admin_render_page(){
         // check whether we have any OAuth params
         extract( $conf );
         if( ! $consumer_key || ! $consumer_secret ){
-            throw new Exception( __('Twitter application not fully configured', GLTW_DOMAIN ) );
+			global $gltw_errors;
+			$gltw_errors .= wpautop( __('Twitter application not fully configured', GLTW_DOMAIN ) );
+            //throw new Exception( __('Twitter application not fully configured', GLTW_DOMAIN ) );
         }
 
         // else exchange access token if callback // request secret saved as option
