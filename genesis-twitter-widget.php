@@ -4,7 +4,7 @@ Plugin Name: Genesis Latest Tweets Widget
 Plugin URI: http://wpsmith.net/
 Description: Genesis Latest Tweets Widget.
 Version: 1.1.2
-Author: wpsmith,Nick_theGeek
+Author: wpsmith, Nick_theGeek
 Author URI: http://wpsmith.net/
 Author Email: t@wpsmith.net 
 License:
@@ -33,7 +33,7 @@ define( 'GLTW_DIR', dirname( __FILE__ ) );
 define( 'GLTW_INC', GLTW_DIR . '/includes' );
 define( 'GLTW_IMG', GLTW_DIR . '/images' );
 define( 'GLTW_API', GLTW_INC . '/api' );
-define( 'GLTW_DOMAIN', GLTW_DOMAIN );
+define( 'GLTW_DOMAIN', 'gltw' );
 
 
 add_action( 'init', 'gltw_widget_init' );
