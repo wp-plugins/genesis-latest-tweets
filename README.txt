@@ -9,7 +9,7 @@ The official plugin from the StudioPress team.
 
 == Description ==
 
-The official plugin from the StudioPress team.
+Genesis Latest Tweets will add a new widget allowing you to show your latest tweets in any widget area. This plugin requires the Genesis theme framework which is available from StudioPress.com.
 
 == Installation ==
 
