@@ -3,7 +3,7 @@
 Plugin Name: Genesis Latest Tweets
 Plugin URI: http://studiopress.com/
 Description: The official plugin from the StudioPress team.
-Version: 1.2.0
+Version: 1.2.1
 Author: StudioPress
 Author URI: http://studiopress.com/
 License:
@@ -94,7 +94,7 @@ function gltw_load_widget() {
 		gltw_log('inc-widget');
 		require_once( GLTW_INC . '/xhtml-widget.php' );
 		
-		register_widget( 'Genesis_Latest_Tweets_Widget' );
+		register_widget( 'Genesis_Latest_Tweets' );
 		
 		// Include application settings panel if in admin area
 		if( is_admin() )

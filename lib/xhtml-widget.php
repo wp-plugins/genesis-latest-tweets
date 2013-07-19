@@ -16,7 +16,7 @@
  *
  * @since 1.1.0
  */
-class Genesis_Latest_Tweets_Widget extends WP_Widget {
+class Genesis_Latest_Tweets extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.

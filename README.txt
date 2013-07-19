@@ -3,7 +3,7 @@ Contributors: studiopress, nick_thegeek, nathanrice
 Tags: genesis, genesiswp, twitter, tweets
 Requires at least: 3.5.0
 Tested up to: 3.5.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 
 The official plugin from the StudioPress team.
 
