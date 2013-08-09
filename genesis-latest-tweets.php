@@ -42,7 +42,7 @@ function gltw_widget_init() {
 	
 }
 
-add_action( 'admin_notices', 'gltw_plugin_activation' );
+//add_action( 'admin_notices', 'gltw_plugin_activation' );
 function gltw_plugin_activation() {
 	global $gltw_errors;
 	
@@ -50,7 +50,7 @@ function gltw_plugin_activation() {
 	
 	if ( ! function_exists( 'gltw_api_config' ) )  extract( gltw_api_config() );
 	
-	if ( empty( $consumer_key ) || empty( $consumer_secret ) || empty( $access_key ) || empty( $access_secret ) || ! empty( $gltw_errors ) ) {
+	if ( empty( $consumer_key ) || empty( $consumer_secret ) || empty( $access_key ) || empty( $access_secret ) ) {
 		printf(
 			'<%1$s class="%2$s">%3$s</%1$s>',
 			'div',
