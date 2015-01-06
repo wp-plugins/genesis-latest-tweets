@@ -3,7 +3,7 @@
 Plugin Name: Genesis Latest Tweets
 Plugin URI: http://studiopress.com/
 Description: The official plugin from the StudioPress team.
-Version: 1.2.2
+Version: 1.2.3
 Author: StudioPress
 Author URI: http://studiopress.com/
 License:
