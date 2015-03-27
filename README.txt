@@ -1,17 +1,15 @@
 === Genesis Latest Tweets ===
-Contributors: studiopress, nick_thegeek, nathanrice
-Tags: adopt-me, genesis, genesiswp, twitter, tweets
+Contributors: peterdog, studiopress, nick_thegeek, nathanrice
+Tags: genesis, genesiswp, twitter, tweets
 Requires at least: 3.5.0
 Tested up to: 3.5.1
 Stable tag: 1.2.3
 
-The official plugin from the StudioPress team.
+The official plugin from WP Valet, adopted from StudioPress in 2015.
 
 == Description ==
 
-__Note: This plugin is no longer actively developed nor maintained!__
-
-__Note: This plugin is available for adoption.__
+__Note: This plugin has just been adopted and is getting re-coded.__
 
 Genesis Latest Tweets will add a new widget allowing you to show your latest tweets in any widget area. This plugin requires the Genesis theme framework which is available from StudioPress.com.
 
@@ -29,7 +27,7 @@ Twitter changed their system early 2013 and dropped support for the old system i
 == Changelog ==
 
 = 1.2.3 =
-* Officially marking this plugin as unsupported and putting it up for addoption
+* Officially marking this plugin as unsupported and putting it up for adoption
 
 = 1.2.2 =
 * Fixed error that could result in an undefined function warning in certain circumstances
