@@ -53,7 +53,7 @@ class Genesis_Official_Twitter_Widget extends WP_Widget {
 			'height'  => 250,
 		);
 
-		$this->WP_Widget( 'latest-tweets', __( 'Genesis Twitter Widget', GLTW_DOMAIN ), $widget_ops, $control_ops );
+		parent::__construct( 'latest-tweets', __( 'Genesis Twitter Widget', GLTW_DOMAIN ), $widget_ops, $control_ops );
 
 	}
 
