@@ -3,7 +3,7 @@ Contributors: peterdog, studiopress, nick_thegeek, nathanrice
 Tags: genesis, genesiswp, twitter, tweets
 Requires at least: 3.5.0
 Tested up to: 3.5.1
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 
 The official plugin from WP Valet, adopted from StudioPress in 2015.
 
@@ -25,6 +25,9 @@ Genesis Latest Tweets will add a new widget allowing you to show your latest twe
 Twitter changed their system early 2013 and dropped support for the old system in mid 2013. Now it is impossible to show the tweets on your site without using authorization from Twitter. There are two ways we can do that, but because we use open PHP it is just too easy for someone to get our keys and use them to ruin everyone's experience, so the simple Oauth approach doesn't work. Instead we are using the method which requires each user to setup their own authorization keys. Then if someone tries to abuse things only that person loses.
 
 == Changelog ==
+
+= 1.2.4 =
+* PHP7 compatibility
 
 = 1.2.3 =
 * Officially marking this plugin as unsupported and putting it up for adoption
